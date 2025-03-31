@@ -20,8 +20,8 @@ const FilterBar = () => {
           <Image
             src={drop}
             alt="dropdown"
-            width={12}
-            height={12}
+            width="12"
+            height="12"
             className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"
           />
         </div>
@@ -35,8 +35,8 @@ const FilterBar = () => {
           <Image
             src={drop}
             alt="dropdown"
-            width={12}
-            height={12}
+            width="12"
+            height="12"
             className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"
           />
         </div>
@@ -51,8 +51,8 @@ const FilterBar = () => {
           <Image
             src={drop}
             alt="dropdown"
-            width={12}
-            height={12}
+            width="12"
+            height="12"
             className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"
           />
         </div>
@@ -70,8 +70,8 @@ const FilterBar = () => {
           <Image
             src={drop}
             alt="dropdown"
-            width={12}
-            height={12}
+            width="12"
+            height="12"
             className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"
           />
         </div>
@@ -85,8 +85,8 @@ const FilterBar = () => {
           <Image
             src={drop}
             alt="dropdown"
-            width={12}
-            height={12}
+            width="12"
+            height="12"
             className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"
           />
         </div>
