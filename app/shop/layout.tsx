@@ -52,6 +52,5 @@ export default function RootLayout({
           <FilterBar/>
           {children}
         </main>
-
   );
 }

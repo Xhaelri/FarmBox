@@ -1,4 +1,5 @@
 // data-service.ts
+import { notFound } from "next/navigation";
 import { supabase } from "./supabase";
 
 export const getProducts = async function() {
@@ -16,9 +17,12 @@ export const getProducts = async function() {
       rating
     `);
 
+    //For Testing
+   // await new Promise((resolve) => setTimeout(resolve, 2000));
+
   if (error) {
     console.log('Error fetching products:', error);
-    return null;
+    return [];
   }
 
   // Transform data to match our Product interface
@@ -46,7 +50,7 @@ export const getProductById = async function(id: string){
 
   if (error) {
     console.log('Error fetching product:', error);
-    return null;
+    notFound()
   }
 
 return data;

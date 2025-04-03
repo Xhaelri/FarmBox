@@ -1,8 +1,17 @@
 import { Suspense } from "react";
-import ProductsList from "../_components/ProductsList";
 import Spinner from "../_components/Spinner";
+import ProductsPage from "./ProductsPage";
 
-const Shop = async () => {
+interface Props {
+  searchParams: Promise<{ [key: string]: string }>;
+}
+
+const Shop = async ({ searchParams }: Props) => {
+
+  const resolvedSearchParams = await searchParams;
+  const filter = resolvedSearchParams?.category ?? "all";
+  //We pass key to the suspense component because the navigation is always wrapped in a transition,
+  //and suspense cannot hide the already rendered content. it'll wait and swap it with the new content
   return (
     <>
       <div>
@@ -11,9 +20,9 @@ const Shop = async () => {
           Discover our exclusive collection of products.
         </p>
       </div>
-      {/* the loading is now overridden by the suspense component */}
-      <Suspense fallback={<Spinner />}>
-        <ProductsList />
+      
+      <Suspense fallback={<Spinner />} key={filter}>
+        <ProductsPage filter={filter} />
       </Suspense>
     </>
   );

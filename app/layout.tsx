@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import TopBar from "./_components/TopBar";
 import NavBar from "./_components/NavBar";
+import { TanstackProvider } from "./_components/providers/tanstack-provider";
 
 export const metadata: Metadata = {
   title: "FarmBox",
@@ -56,7 +57,7 @@ export default function RootLayout({
           <NavBar />
         </header>
         <main className="flex-grow">
-          {children}
+        <TanstackProvider>{children}</TanstackProvider>
         </main>
       </body>
     </html>

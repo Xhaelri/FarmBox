@@ -1,29 +1,44 @@
-// page.tsx (product detail page)
-import { getProductById } from "../../_lib/data-service";
-import ProductDetails from "../../_components/ProductDetails";
+import ProductPage from "./ProductPage"; // Import the correct component
 
 interface Props {
   params: Promise<{ id: string }>;
 }
 
-const ProductPage = async ({ params }: Props) => {
+const Page = async ({ params }: Props) => {
+  return <ProductPage params={params} />;
+};
+
+export default Page;
+
+/* export async function generateStaticParams() {
+  const products = await getProducts();
+
+
+  const ids = products?.map((product: Product) => ({
+    id: String(product.id)
+  })) || [];
+  return ids
+}
+
+ */
+
+/* export async function generateMetadata({ params }: Props) {
   const resolvedParams = await params;
   const productId = resolvedParams.id;
-  
+
   // Use your Supabase data service instead of fetching from an external API
   const product = await getProductById(productId);
 
   if (!product) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <p className="text-xl text-red-500">Product not found</p>
-      </div>
-    );
+    return {
+      title: "Product Not Found",
+      description: "The requested product could not be found",
+    };
   }
 
-  return (
-    <ProductDetails  product={product} />
-  );
-};
-
-export default ProductPage;
+  return {
+    title: `${product.name}`,
+    description: `Details about product ${product.name}`,
+  };
+}
+ */

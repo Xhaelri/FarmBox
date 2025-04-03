@@ -10,6 +10,7 @@ import search from "../../public/Search.svg";
 import heart from "../../public/heart.svg";
 import user from "../../public/user.svg";
 import Link from "next/link";
+import cart from "../../public/bag.svg";
 import { usePathname } from "next/navigation";
 
 const navLinks = [
@@ -23,7 +24,8 @@ const navLinks = [
 const iconLinks = [
   { src: search, alt: "search", size: 22 },
   { src: heart, alt: "heart", size: 22 },
-  { src: user, alt: "user", size: 19 },
+  { src: cart, path: "/cart", alt: "cart", size: 21 },
+  { src: user, path: "/account", alt: "user", size: 19 },
 ];
 
 const NavBar = () => {
@@ -50,6 +52,7 @@ const NavBar = () => {
                 {label}
               </Link>
               <Image
+                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
                 src={pathname === href ? dropblack : dropgray}
                 alt="drop-icon"
               />
@@ -58,18 +61,58 @@ const NavBar = () => {
         </div>
 
         <div className="flex items-center justify-center space-x-1 text-nowrap">
-          <Image src={leaf} alt="icon" />
+          <Image
+            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+            src={leaf}
+            alt="icon"
+          />
           <span className="text-black text-2xl font-bold">FarmBox</span>
         </div>
 
         <div className="flex items-center justify-end space-x-4 text-nowrap">
           <div className="hidden md:flex items-center space-x-2.5">
-            <Image src={phone} alt="phone" width="22" height="22" />
+            <Image
+              blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+              src={phone}
+              alt="phone"
+              width="22"
+              height="22"
+            />
             <span className="text-black text-sm">(+20) 10-6188-1525</span>
           </div>
-          {iconLinks.map(({ src, alt, size }) => (
-            <Image key={alt} src={src} alt={alt} width={size} height={size} className="cursor-pointer" />
-          ))}
+          {iconLinks.map(({ src, alt, size, path }) =>
+            path ? (
+              // If path exists, wrap Image in Link
+              <Link href={path} key={alt} className="flex items-center">
+                <Image
+              blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+              src={src}
+                  alt={alt} // Consider more descriptive alt text like "My Account" for the user icon
+                  width={size}
+                  height={size}
+                  className="cursor-pointer"
+                />
+              </Link>
+            ) : (
+              // If no path, render Image directly (consider wrapping in button if interactive)
+              <button
+                key={alt}
+                onClick={() => {
+                  /* Handle action like opening search */
+                }}
+                className="p-0 border-0 bg-transparent cursor-pointer flex items-center"
+              >
+              
+                <Image
+              blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+              src={src}
+                  alt={alt} // E.g., "Search", "Wishlist"
+                  width={size}
+                  height={size}
+                />
+              </button>
+            )
+          )}
         </div>
       </div>
 
@@ -77,24 +120,48 @@ const NavBar = () => {
       <div className="xl:hidden px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-1">
-            <Image src={leaf} alt="icon" />
+            <Image
+              blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+              src={leaf}
+              alt="icon"
+            />
             <span className="text-black text-xl font-bold">FarmBox</span>
           </div>
 
           <div className="flex items-center space-x-4">
             {iconLinks.slice(0, 2).map(({ src, alt, size }) => (
-              <Image key={alt} src={src} alt={alt} width={size} height={size} className="cursor-pointer" />
+              <Image
+                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+                key={alt}
+                src={src}
+                alt={alt}
+                width={size}
+                height={size}
+                className="cursor-pointer"
+              />
             ))}
-            
-            <button 
-              onClick={toggleMenu} 
+
+            <button
+              onClick={toggleMenu}
               className="p-2 focus:outline-none"
               aria-label="Toggle menu"
             >
               <div className="w-6 flex flex-col items-end space-y-1.5">
-                <span className={`block h-0.5 bg-black transition-all duration-300 ease-out ${isMenuOpen ? 'w-6 -rotate-45 translate-y-2' : 'w-6'}`}></span>
-                <span className={`block h-0.5 bg-black transition-all duration-300 ease-out ${isMenuOpen ? 'opacity-0' : 'w-4'}`}></span>
-                <span className={`block h-0.5 bg-black transition-all duration-300 ease-out ${isMenuOpen ? 'w-6 rotate-45 -translate-y-2' : 'w-5'}`}></span>
+                <span
+                  className={`block h-0.5 bg-black transition-all duration-300 ease-out ${
+                    isMenuOpen ? "w-6 -rotate-45 translate-y-2" : "w-6"
+                  }`}
+                ></span>
+                <span
+                  className={`block h-0.5 bg-black transition-all duration-300 ease-out ${
+                    isMenuOpen ? "opacity-0" : "w-4"
+                  }`}
+                ></span>
+                <span
+                  className={`block h-0.5 bg-black transition-all duration-300 ease-out ${
+                    isMenuOpen ? "w-6 rotate-45 -translate-y-2" : "w-5"
+                  }`}
+                ></span>
               </div>
             </button>
           </div>
@@ -109,7 +176,9 @@ const NavBar = () => {
                   <Link
                     href={href}
                     className={`block py-2 ${
-                      pathname === href ? "text-black font-medium" : "text-[#808080]"
+                      pathname === href
+                        ? "text-black font-medium"
+                        : "text-[#808080]"
                     }`}
                     onClick={() => setIsMenuOpen(false)}
                   >
@@ -119,13 +188,25 @@ const NavBar = () => {
               ))}
               <li className="pt-2 border-t border-gray-100">
                 <div className="flex items-center space-x-2.5">
-                  <Image src={phone} alt="phone" width="18" height="18" />
+                  <Image
+                    blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+                    src={phone}
+                    alt="phone"
+                    width={18}
+                    height={18}
+                  />
                   <span className="text-black text-sm">(+20) 10-6188-1525</span>
                 </div>
               </li>
               <li>
                 <div className="flex items-center space-x-2.5">
-                  <Image src={user} alt="user" width="18" height="18" />
+                  <Image
+                    blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+                    src={user}
+                    alt="user"
+                    width={18}
+                    height={18}
+                  />
                   <span className="text-[#808080] text-sm">My Account</span>
                 </div>
               </li>

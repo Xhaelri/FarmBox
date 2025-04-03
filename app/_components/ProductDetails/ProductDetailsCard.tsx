@@ -1,29 +1,32 @@
 "use client";
-import Image from "next/image";
-import Product from "../types/Product";
+import Product from "../../types/Product";
 import { useState } from "react";
+import TextExpander from "../TextExpander";
+import ImageWithPlaceholder from "../ImageWithPlaceholder";
 
-const ProductDetails = ({ product }: { product: Product }) => {
+interface Props {
+  data: Product;
+}
+
+const ProductDetailsCard = ({ data }: Props) => {
   const [isInCart, setIsInCart] = useState(false);
 
-  const primaryImage = product.product_images?.find(
+  const primaryImage = data.product_images?.find(
     (img) => img.is_primary
   )?.image_url;
 
   const addToCart = () => {
     setIsInCart(!isInCart);
-    console.log(
-      `${isInCart ? "Removed from" : "Added to"} cart: ${product.name}`
-    );
+    console.log(`${isInCart ? "Removed from" : "Added to"} cart: ${data.name}`);
   };
 
   // Get category names (handling categories as an array)
   let categoryDisplay = "Unknown";
-  if (product.categories) {
-    if (Array.isArray(product.categories)) {
-      categoryDisplay = product.categories.map(cat => cat.name).join(", ");
-    } else if (typeof product.categories === 'object' && product.categories.name) {
-      categoryDisplay = product.categories.name;
+  if (data.categories) {
+    if (Array.isArray(data.categories)) {
+      categoryDisplay = data.categories.map((cat) => cat.name).join(", ");
+    } else if (typeof data.categories === "object" && data.categories.name) {
+      categoryDisplay = data.categories.name;
     }
   }
   return (
@@ -31,12 +34,13 @@ const ProductDetails = ({ product }: { product: Product }) => {
       <div className="flex flex-col md:flex-row gap-10">
         <div className="md:w-1/2">
           {primaryImage ? (
-            <Image
+            <ImageWithPlaceholder
               src={primaryImage}
-              alt={product.name}
-              width="400"
-              height="400"
+              alt={data.name}
+              width={400}
+              height={400}
               className="object-contain rounded-lg"
+              priority={true}
             />
           ) : (
             <div className="w-full h-[400px] bg-gray-200 flex items-center justify-center rounded-lg">
@@ -46,16 +50,16 @@ const ProductDetails = ({ product }: { product: Product }) => {
         </div>
 
         <div className="md:w-1/2 flex flex-col gap-4">
-          <h1 className="text-3xl font-bold">{product.name}</h1>
-          <p className="text-gray-700">{product.description}</p>
-          <p className="font-semibold text-2xl text-green-700">
-            ${product.price}
-          </p>
+          <h1 className="text-3xl font-bold">{data.name}</h1>
+          <TextExpander>
+            {String(data.description)}
+          </TextExpander>
+          <p className="font-semibold text-2xl text-green-700">${data.price}</p>
 
           <div className="bg-gray-100 p-4 rounded-lg">
             <p>Category: {categoryDisplay}</p>
-            <p>Stock Available: {product.stock}</p>
-            {product.rating && <p>Rating: ⭐️ {product.rating}</p>}
+            <p>Stock Available: {data.stock}</p>
+            {data.rating && <p>Rating: ⭐️ {data.rating}</p>}
           </div>
 
           <button
@@ -74,4 +78,4 @@ const ProductDetails = ({ product }: { product: Product }) => {
   );
 };
 
-export default ProductDetails;
+export default ProductDetailsCard;
