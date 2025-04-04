@@ -1,26 +1,26 @@
-export interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  stock: number;
-  category_id: number;
-  seller_id?: string;
-  created_at?: string;
-  rating?: number;
-  discount_percentage?: number;
-  sku?: string;
-  brand?: string;
-  reviews_count?: number;
-}
-
-export interface ProductImage {
-  id: string;
-  product_id: string;
+// types/Product.ts
+interface ProductImage {
   image_url: string;
   is_primary: boolean;
-  uploaded_at: string;
-  sort_order: number;
+}
+
+interface Category {
+  name: string;
+}
+
+interface Product {
+  id: number; // Changed to number
+  name: string;
+  price: number;
+  description: string;
+  stock: number;
+  category_id: number;
+  categories: Category | null; // Simplified relation
+  rating: number | null;
+  product_images: ProductImage[] | null;
+  brand?: string; // Optional
+  sku?: string; // Optional
 }
 
 export default Product;
+export type { ProductImage, Category };

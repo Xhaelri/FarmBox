@@ -4,6 +4,8 @@ import "./globals.css";
 import TopBar from "./_components/TopBar";
 import NavBar from "./_components/NavBar";
 import { TanstackProvider } from "./_components/providers/tanstack-provider";
+import { CartProvider } from "./_components/CartContext/CartContext";
+import { auth } from "./_lib/auth";
 
 export const metadata: Metadata = {
   title: "FarmBox",
@@ -44,21 +46,27 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
+
   return (
     <html lang="en">
       <body className="antialiased flex flex-col min-h-screen">
-        <header className="w-full">
-          <TopBar />
-          <NavBar />
-        </header>
-        <main className="flex-grow">
-        <TanstackProvider>{children}</TanstackProvider>
-        </main>
+        <CartProvider>
+          <TanstackProvider>
+            <header className="w-full">
+              <TopBar />
+              <NavBar session={session} />
+            </header>
+            <main className="flex-grow">
+              {children}
+            </main>
+          </TanstackProvider>
+        </CartProvider>
       </body>
     </html>
   );

@@ -5,7 +5,6 @@ import Image from "next/image";
 import drop from "../../public/dropblack.svg";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-
 const FilterBar = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -14,7 +13,7 @@ const FilterBar = () => {
   const handleFilter = (filter: string) => {
     const params = new URLSearchParams(searchParams);
     params.set("category", filter);
-    router.replace(`${pathname}?${params.toString()}`, {scroll: false});
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
   const selectStyle =
@@ -22,14 +21,13 @@ const FilterBar = () => {
 
   return (
     <div className="flex flex-wrap items-center justify-between gap-4 p-4 bg-white rounded-lg mx-4 sm:mx-[10%] mt-5">
-      {/* Left Filters */}
       <div className="flex flex-wrap gap-3">
         <div className="relative">
-          <select 
+          <select
             className={selectStyle}
             onChange={(e) => handleFilter(e.target.value)}
           >
-            <option  value="">Select Category</option>
+            <option value="">Select Category</option>
             <option value="all">All</option>
             <option value="vegetables">Vegetables</option>
             <option value="fruits">Fruits</option>
@@ -76,7 +74,6 @@ const FilterBar = () => {
         </div>
       </div>
 
-      {/* Right Sort & Show */}
       <div className="flex flex-wrap gap-3">
         <div className="relative">
           <select className={selectStyle}>
@@ -114,7 +111,5 @@ const FilterBar = () => {
     </div>
   );
 };
-
-
 
 export default FilterBar;

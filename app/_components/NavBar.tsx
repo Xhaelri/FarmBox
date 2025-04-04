@@ -13,6 +13,17 @@ import Link from "next/link";
 import cart from "../../public/bag.svg";
 import { usePathname } from "next/navigation";
 
+interface User {
+  name?: string;
+  email?: string;
+  image?: string;
+}
+
+interface SessionType {
+  user?: User;
+  expires?: string;
+}
+
 const navLinks = [
   { href: "/", label: "Home" },
   { href: "/shop", label: "Shop" },
@@ -25,10 +36,9 @@ const iconLinks = [
   { src: search, alt: "search", size: 22 },
   { src: heart, alt: "heart", size: 22 },
   { src: cart, path: "/cart", alt: "cart", size: 21 },
-  { src: user, path: "/account", alt: "user", size: 19 },
 ];
 
-const NavBar = () => {
+const NavBar = ({ session }: { session: SessionType }) => {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -38,7 +48,6 @@ const NavBar = () => {
 
   return (
     <nav className="bg-white sticky top-0 z-10">
-      {/* Desktop Navigation */}
       <div className="mx-4 sm:mx-[5%] md:mx-[10%] py-4 hidden xl:grid grid-cols-3">
         <div className="flex justify-start space-x-4 md:space-x-6">
           {navLinks.map(({ href, label }) => (
@@ -80,21 +89,21 @@ const NavBar = () => {
             />
             <span className="text-black text-sm">(+20) 10-6188-1525</span>
           </div>
+
+          {/* First render non-user icon links */}
           {iconLinks.map(({ src, alt, size, path }) =>
             path ? (
-              // If path exists, wrap Image in Link
               <Link href={path} key={alt} className="flex items-center">
                 <Image
-              blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
-              src={src}
-                  alt={alt} // Consider more descriptive alt text like "My Account" for the user icon
+                  blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+                  src={src}
+                  alt={alt}
                   width={size}
                   height={size}
                   className="cursor-pointer"
                 />
               </Link>
             ) : (
-              // If no path, render Image directly (consider wrapping in button if interactive)
               <button
                 key={alt}
                 onClick={() => {
@@ -102,21 +111,36 @@ const NavBar = () => {
                 }}
                 className="p-0 border-0 bg-transparent cursor-pointer flex items-center"
               >
-              
                 <Image
-              blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
-              src={src}
-                  alt={alt} // E.g., "Search", "Wishlist"
+                  blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+                  src={src}
+                  alt={alt}
                   width={size}
                   height={size}
                 />
               </button>
             )
           )}
+
+          {session?.user?.image ? (
+            <Link href="/account" className="flex items-center">
+              <Image
+                src={session.user.image}
+                alt="user profile"
+                width={25}
+                height={25}
+                className="cursor-pointer rounded-full"
+                referrerPolicy="no-referrer"
+              />
+            </Link>
+          ) : (
+            <Link href="/account" className="flex items-center">
+              <div className=""></div>
+            </Link>
+          )}
         </div>
       </div>
 
-      {/* Mobile Navigation */}
       <div className="xl:hidden px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-1">
@@ -167,7 +191,6 @@ const NavBar = () => {
           </div>
         </div>
 
-        {/* Mobile Menu */}
         {isMenuOpen && (
           <div className="mt-4 py-3 border-t border-gray-100">
             <ul className="space-y-4">
@@ -200,13 +223,23 @@ const NavBar = () => {
               </li>
               <li>
                 <div className="flex items-center space-x-2.5">
-                  <Image
-                    blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
-                    src={user}
-                    alt="user"
-                    width={18}
-                    height={18}
-                  />
+                  {session?.user?.image ? (
+                    <Image
+                      src={session.user.image}
+                      alt="user profile"
+                      width={18}
+                      height={18}
+                      className="rounded-full"
+                    />
+                  ) : (
+                    <Image
+                      blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+                      src={user}
+                      alt="user"
+                      width={18}
+                      height={18}
+                    />
+                  )}
                   <span className="text-[#808080] text-sm">My Account</span>
                 </div>
               </li>

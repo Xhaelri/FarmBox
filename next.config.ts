@@ -8,6 +8,10 @@ const nextConfig: NextConfig = {
         hostname: "tvwxwxmwxbndmoicihnd.supabase.co",
         port: "",
       },
+      {
+        hostname: "lh3.googleusercontent.com",
+        port: "",
+      },
     ],
   },
 };

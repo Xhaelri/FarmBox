@@ -1,4 +1,3 @@
-// Dashboard.jsx - Main component to display user profile and recent orders
 import Link from "next/link";
 import Image from "next/image";
 import OrderRow from "./OrderRow";
@@ -7,19 +6,15 @@ import notfound from "../../public/notfound.png";
 export const metadata = {
   title: "Account",
   description: "Account page",
-}
-export default function Dashboard() {
+};
+export default  function Dashboard() {
   return (
     <div className="max-h-fit ">
       <div className="container mx-auto px-4 ">
         <div className="grid grid-cols-1 gap-6">
-          {/* Navigation Sidebar */}
-          <div className="md:col-span-1">
-          </div>
+          <div className="md:col-span-1"></div>
 
-          {/* Main Content Area */}
           <div className="md:col-span-2 space-y-6">
-            {/* User Profile */}
             <div className="bg-white rounded-lg border border-gray-200 p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="flex flex-col items-center justify-center">
                 <div className="relative w-24 h-24 mb-4">
@@ -55,7 +50,6 @@ export default function Dashboard() {
               </div>
             </div>
 
-            {/* Recent Order History */}
             <div className="bg-white rounded-lg border border-gray-200">
               <div className="p-6 flex justify-between items-center">
                 <h3 className="font-semibold text-lg">Recent Order History</h3>
@@ -133,5 +127,3 @@ export default function Dashboard() {
     </div>
   );
 }
-
-// Navigation Sidebar Component

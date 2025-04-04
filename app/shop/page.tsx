@@ -22,6 +22,7 @@ const Shop = async ({ searchParams }: Props) => {
         </p>
       </div>
       <FilterBar/>
+      
       <Suspense fallback={<Spinner />} key={filter}>
         <ProductsPage filter={filter} />
       </Suspense>

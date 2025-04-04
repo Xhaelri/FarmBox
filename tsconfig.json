@@ -30,6 +30,6 @@
     "app/not-found.tsx",
     "app/account/settings",
     "app/account/order-history"
-  ],
+, "app/api/auth/[...nextauth]/route.js", "app/_lib/auth.ts"  ],
   "exclude": ["node_modules"]
 }

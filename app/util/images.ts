@@ -1,4 +1,4 @@
-// util/images.ts
+  
 'use server'
 import sharp from 'sharp'
 import { promises as fs } from 'fs'
@@ -43,7 +43,7 @@ function getFileBuffer(src: string) {
 }
 
 export const getPlaceholderImage = cache(async (filepath: string) => {
-  // Edge runtime fallback
+    
   if (process.env.NEXT_RUNTIME === 'edge') {
     return {
       src: filepath,

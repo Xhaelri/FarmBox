@@ -5,7 +5,8 @@ interface Props {
 }
 
 const Page = async ({ params }: Props) => {
-  return <ProductPage params={params} />;
+  const resolvedParams = await params;
+  return <ProductPage params={resolvedParams} />;
 };
 
 export default Page;

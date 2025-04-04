@@ -3,17 +3,15 @@ import OrderRow from "../OrderRow";
 export const metadata = {
   title: "Orders",
   description: "Account Orders",
-}
+};
 
 export function OrderHistory() {
   return (
     <div className="min-h-screen ">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1  gap-6">
-          {/* Navigation Sidebar */}
           <div className="md:col-span-1"></div>
 
-          {/* Order History Content */}
           <div className="md:col-span-2">
             <div className="bg-white rounded-lg border border-gray-200">
               <div className="p-6">
@@ -86,7 +84,6 @@ export function OrderHistory() {
                 </table>
               </div>
 
-              {/* Pagination */}
               <div className="px-6 py-4 flex justify-center">
                 <nav className="flex items-center space-x-1">
                   <button className="px-3 py-1 rounded-md border text-gray-500">
