@@ -1,5 +1,5 @@
-import ProductDetails from "../../_components/ProductDetails/ProductDetails"; // Correct import path
-import { getProductById } from "../../_lib/data-service";
+import ProductDetails from "../../../_components/ProductDetails/ProductDetails"; // Correct import path
+import { getProductById } from "../../../_lib/data-service";
 
 interface Props {
   params: Promise<{ id: string }>;

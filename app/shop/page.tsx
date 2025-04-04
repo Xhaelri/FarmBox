@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import Spinner from "../_components/Spinner";
 import ProductsPage from "./ProductsPage";
+import FilterBar from "../_components/FilterBar";
 
 interface Props {
   searchParams: Promise<{ [key: string]: string }>;
@@ -20,7 +21,7 @@ const Shop = async ({ searchParams }: Props) => {
           Discover our exclusive collection of products.
         </p>
       </div>
-      
+      <FilterBar/>
       <Suspense fallback={<Spinner />} key={filter}>
         <ProductsPage filter={filter} />
       </Suspense>

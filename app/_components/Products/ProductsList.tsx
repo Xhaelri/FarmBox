@@ -1,20 +1,23 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
+// Adjust import paths if necessary
 import { getProducts } from "../../_lib/data-service";
-import ProductCard from "./ProductCard";
+import ProductCard from "./ProductCard"; // Assuming this component exists
 import Spinner from "../Spinner";
-import Product from "../../types/Product";
+import Product from "../../types/Product"; // Ensure Product type is updated
 
 interface Props {
-  initialData: Product[];
-  filter: string;
+  initialData?: Product[]; // Make initialData optional if page might load without it first
+  filter: string; // Filter key (e.g., 'all', 'vegetables', 'fruits')
 }
 
+// Optional: Define category mappings for clarity
+
 const ProductList = ({ initialData, filter }: Props) => {
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading, isError } = useQuery<Product[]>({ // Type the query data
     queryKey: ["products"],
-    queryFn: getProducts,
-    staleTime: 5 * 60 * 1000,
+    queryFn: () => getProducts(),
+    staleTime: 5 * 60 * 1000, // 5 minutes
     initialData: initialData,
   });
 
@@ -47,7 +50,7 @@ const ProductList = ({ initialData, filter }: Props) => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 py-10 mx-4 sm:mx-[10%]">
-      {displayedProducts?.map((product) => (
+      {displayedProducts?.map((product: Product) => (
         <ProductCard key={product.id} product={product} />
       ))}
     </div>

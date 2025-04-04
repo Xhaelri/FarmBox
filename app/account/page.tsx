@@ -2,6 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import OrderRow from "./OrderRow";
+import notfound from "../../public/notfound.png";
 
 export const metadata = {
   title: "Account",
@@ -23,7 +24,7 @@ export default function Dashboard() {
               <div className="flex flex-col items-center justify-center">
                 <div className="relative w-24 h-24 mb-4">
                   <Image
-                    src="/profile-placeholder.jpg"
+                    src={notfound}
                     alt="Profile Picture"
                     className="rounded-full object-cover"
                     fill

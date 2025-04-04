@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     siteName: "FarmBox",
   },
   icons: {
-    icon: "/favicon.svg",
+    icon: "/app/favicon.ico",
   },
 };
 

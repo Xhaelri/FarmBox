@@ -1,5 +1,5 @@
+
 import type { Metadata } from "next";
-import FilterBar from "../_components/FilterBar";
 
 
 export const metadata: Metadata = {
@@ -46,10 +46,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
 
         <main>
-          <FilterBar/>
+          
           {children}
         </main>
   );
