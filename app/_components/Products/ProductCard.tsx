@@ -1,63 +1,55 @@
 // components/ProductCard.tsx
 "use client";
-import { useState, useMemo } from "react";
+import { useState } from "react"; // Removed useMemo
 import Link from "next/link";
 import Product from "../../types/Product"; // Ensure path is correct
-import ImageWithPlaceholder from "../ImageWithPlaceholder"; // Assuming this component exists and works
-import { useCart } from "../../_components/CartContext/CartContext"; // Import useCart - Adjust path if necessary
-import { ShoppingBagIcon, TrashIcon } from '@heroicons/react/24/outline'; // Example icons
+// import ImageWithPlaceholder from "../ImageWithPlaceholder"; // Ensure path is correct
+import { useCart } from "../../_components/CartContext/CartContext"; // Ensure path is correct
+import { ShoppingBagIcon, TrashIcon } from '@heroicons/react/24/outline'; // Icons
+import Image from "next/image";
 
 interface ProductCardProps {
-  product: Product; // Uses the Product type with id: number
+  product: Product;
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
-  // --- Use Cart Context ---
+  // --- Cart Context ---
   const { addToCart, removeFromCart, isInCart } = useCart();
 
-  // Determine if the product is actually in the cart using the context function
-  const isProductInCart = useMemo(() => isInCart(product.id), [isInCart, product.id]);
-
-  // --- Local state for Favorites (remains local for now) ---
+  // --- Local state for Favorites ---
   const [isFavorite, setIsFavorite] = useState(false);
 
-  // --- Get Primary Image ---
-  const primaryImage = useMemo(() => {
-    // Safely access product_images and find the primary or first image URL
-    return (
-      product.product_images?.find((img) => img.is_primary)?.image_url ||
-      product.product_images?.[0]?.image_url || // Fallback to the first image
-      null // Return null if no images exist
-    );
-  }, [product.product_images]);
+  // --- Determine derived state directly ---
+  const isProductInCart = isInCart(product.id); // Directly call context function
+  const canAddToCart = product.stock > 0;
 
-  // --- Event Handlers ---
+  // Find the image URL directly
+  const primaryImage =
+    product.product_images?.find((img) => img.is_primary)?.image_url ||
+    product.product_images?.[0]?.image_url ||
+    null; // Fallback to first image or null
 
-  // Updated to use Cart Context functions
+  // --- Event Handlers (logic remains the same) ---
   const handleCartClick = (e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent Link navigation when clicking the button
+    e.preventDefault(); // Prevent Link navigation
 
     if (isProductInCart) {
-      // If already in cart, remove it
       removeFromCart(product.id);
       console.log(`Removed from cart: ${product.name}`);
+    } else if (canAddToCart) {
+      addToCart(
+        {
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          image: primaryImage || "/placeholder.jpg", // Use determined image
+        },
+        1 // Add quantity 1
+      );
+      console.log(`Added to cart: ${product.name}`);
     } else {
-      // If not in cart, check stock and add it (quantity 1 by default)
-      if (product.stock > 0) {
-        addToCart(
-          {
-            id: product.id,
-            name: product.name,
-            price: product.price,
-            image: primaryImage || "/placeholder.jpg", // Use determined image or placeholder
-          },
-          1 // Add quantity 1
-        );
-        console.log(`Added to cart: ${product.name}`);
-      } else {
-        console.warn(`Cannot add to cart: ${product.name} is out of stock.`);
-        // Optionally, provide user feedback (e.g., toast notification)
-      }
+      console.warn(`Cannot add to cart: ${product.name} is out of stock.`);
+      // Feedback like a toast could be added here
     }
   };
 
@@ -67,49 +59,65 @@ const ProductCard = ({ product }: ProductCardProps) => {
     console.log(
       `${!isFavorite ? "Added to" : "Removed from"} favorites: ${product.name}`
     );
-    // Add actual favorite logic here (e.g., context or API call)
+    // Add actual favorite persistence logic (context/API) here if needed
   };
 
-  // Determine if the "Add to Cart" button should be disabled
-  const canAddToCart = product.stock > 0;
+  // --- Determine Button State ahead of time for cleaner JSX ---
+  let ButtonContent: React.ReactNode;
+  let buttonStyles = "";
+  const baseButtonStyles = "mt-4 w-full py-2 px-4 text-sm rounded-md transition-all flex items-center justify-center gap-2 whitespace-nowrap";
+  const isButtonDisabled = !canAddToCart && !isProductInCart; // Disabled only if out of stock AND not in cart
 
+  if (isProductInCart) {
+    ButtonContent = <> <TrashIcon className="w-4 h-4" /> Remove </>;
+    buttonStyles = `${baseButtonStyles} bg-red-100 text-red-700 hover:bg-red-200 border border-red-200`;
+  } else if (canAddToCart) {
+    ButtonContent = <> <ShoppingBagIcon className="w-4 h-4" /> Add to Cart </>;
+    buttonStyles = `${baseButtonStyles} bg-green-600 text-white hover:bg-green-700 border border-transparent`;
+  } else {
+    ButtonContent = 'Out of Stock';
+    buttonStyles = `${baseButtonStyles} bg-gray-300 text-gray-500 cursor-not-allowed border border-transparent`;
+  }
+
+  // --- Render Component ---
   return (
-    // Link wraps the entire card
+    // Link wraps the entire card - Styles remain the same
     <Link
-      href={`/shop/${product.id}`} // Uses number ID
-      className="group flex flex-col justify-between border border-gray-200 rounded-lg transition-all duration-300 hover:border-green-600 hover:shadow-lg overflow-hidden h-full" // Added h-full for consistent height in grids
+      href={`/shop/${product.id}`}
+      className="group flex flex-col justify-between border border-gray-200 rounded-lg transition-all duration-300 hover:border-green-600 hover:shadow-lg overflow-hidden h-full"
     >
-      {/* Top Section: Image and Favorite Button */}
-      <div className="relative aspect-square w-full p-4 flex items-center justify-center bg-gray-50"> {/* Added padding and centering */}
-        {/* Favorite Button */}
+      {/* Top Section: Image and Favorite Button - Styles remain the same */}
+      <div className="relative aspect-square w-full p-4 flex items-center justify-center ">
+        {/* Favorite Button - Logic and Styles remain the same */}
         <button
           onClick={handleFavoriteClick}
           className="absolute top-2 right-2 z-10 p-2 rounded-full bg-white/70 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-white transition-all"
           aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
         >
           {isFavorite ? (
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-red-500">
-              <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.218l-.022.012-.007.004-.004.001z" />
-            </svg>
-          ) : (
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-            </svg>
-          )}
+             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-red-500">
+               <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.218l-.022.012-.007.004-.004.001z" />
+             </svg>
+           ) : (
+             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+               <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+             </svg>
+           )}
         </button>
 
-        {/* Product Image */}
-        <div className="w-full max-w-[200px] h-auto aspect-square relative"> {/* Constrain image size */}
-         {primaryImage ? (
-            <ImageWithPlaceholder
+        {/* Product Image Container - Styles remain the same */}
+        <div className="w-full max-w-[220px] h-auto aspect-square relative">
+          {primaryImage ? (
+            <Image
               src={primaryImage}
               alt={product.name}
-              width={200}
-              height={200} // Use fill and let the parent div control size
-              className="object-contain" // Use contain to show the whole product
-              priority={false} // Only prioritize above-the-fold images typically
+              width={500}
+              height={500}
+              className="object-center" // Use contain
+              // priority={false} // Keep priority low unless critical
             />
           ) : (
+             // Fallback display - Styles remain the same
             <div className="w-full h-full bg-gray-200 flex items-center justify-center rounded text-gray-400 text-xs">
               No Image
             </div>
@@ -117,41 +125,31 @@ const ProductCard = ({ product }: ProductCardProps) => {
         </div>
       </div>
 
-      {/* Bottom Section: Details and Cart Button */}
-      <div className="w-full p-4 flex flex-col flex-grow"> {/* Added flex-grow */}
+      {/* Bottom Section: Details and Cart Button - Styles remain the same */}
+      <div className="w-full p-4 flex flex-col flex-grow">
+         {/* Product Name - Styles remain the same */}
         <h2
-          title={product.name} // Add title for full name on hover
-          className="text-gray-700 line-clamp-2 text-sm font-medium group-hover:text-green-700 flex-grow min-h-[40px]" // Allow title to grow
+          title={product.name}
+          className="text-gray-700 line-clamp-2 text-sm font-medium group-hover:text-green-700 flex-grow min-h-[40px]"
         >
           {product.name}
         </h2>
-        <p className="text-gray-900 font-semibold mt-2"> {/* Increased spacing */}
+         {/* Product Price - Styles remain the same */}
+        <p className="text-gray-900 font-semibold mt-2">
           ${product.price.toFixed(2)}
         </p>
-         {/* Optional: Show stock status */}
-         <p className={`text-xs mt-1 ${product.stock > 0 ? 'text-green-600' : 'text-red-600'}`}>
-            {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
-         </p>
+        {/* Stock Status - Styles remain the same */}
+        <p className={`text-xs mt-1 ${product.stock > 0 ? 'text-green-600' : 'text-red-600'}`}>
+           {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
+        </p>
 
-        {/* Use actual cart status for button appearance */}
+        {/* Cart Button - Uses pre-calculated state */}
         <button
           onClick={handleCartClick}
-          disabled={!canAddToCart && !isProductInCart} // Disable adding if out of stock, allow removing
-          className={`mt-4 w-full py-2 px-4 text-sm rounded-md transition-all flex items-center justify-center gap-2 whitespace-nowrap ${
-             isProductInCart
-              ? "bg-red-100 text-red-700 hover:bg-red-200 border border-red-200" // Style for Remove
-              : canAddToCart
-              ? "bg-green-600 text-white hover:bg-green-700 border border-transparent" // Style for Add
-              : "bg-gray-300 text-gray-500 cursor-not-allowed border border-transparent" // Style for Disabled/Out of Stock
-          }`}
+          disabled={isButtonDisabled}
+          className={buttonStyles} // Apply determined styles
         >
-          {isProductInCart ? (
-             <> <TrashIcon className="w-4 h-4"/> Remove </>
-          ) : canAddToCart ? (
-             <> <ShoppingBagIcon className="w-4 h-4"/> Add to Cart </>
-          ) : (
-             'Out of Stock'
-          )}
+          {ButtonContent} {/* Render determined content */}
         </button>
       </div>
     </Link>

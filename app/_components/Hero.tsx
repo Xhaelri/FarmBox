@@ -1,4 +1,4 @@
-import ImageWithPlaceholder from "./ImageWithPlaceholder";
+// import ImageWithPlaceholder from "./ImageWithPlaceholder";
 import arrow from "../../public/arrowwhite.svg";
 import Image from "next/image";
 
@@ -22,7 +22,7 @@ export default function Hero() {
         <div className="container mx-auto h-full">
           <div className="flex flex-col sm:flex-row items-center justify-center w-full h-full px-4 py-8 md:py-12 lg:py-16 gap-4 md:gap-8 lg:gap-16">
             <div className="w-full md:w-1/2 flex justify-center">
-              <ImageWithPlaceholder
+              <Image
                 src={heroImage}
                 alt="Fresh organic vegetables"
                 width={700}

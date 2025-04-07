@@ -6,6 +6,7 @@ import NavBar from "./_components/NavBar";
 import { TanstackProvider } from "./_components/providers/tanstack-provider";
 import { CartProvider } from "./_components/CartContext/CartContext";
 import { auth } from "./_lib/auth";
+import SessionType from "./types/Session";
 
 export const metadata: Metadata = {
   title: "FarmBox",
@@ -51,7 +52,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth();
+  const session: SessionType | null = await auth();
 
   return (
     <html lang="en">

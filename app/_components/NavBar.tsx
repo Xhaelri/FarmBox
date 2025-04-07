@@ -12,17 +12,10 @@ import user from "../../public/user.svg";
 import Link from "next/link";
 import cart from "../../public/bag.svg";
 import { usePathname } from "next/navigation";
+import SessionType from "../types/Session";
 
-interface User {
-  name?: string;
-  email?: string;
-  image?: string;
-}
 
-interface SessionType {
-  user?: User;
-  expires?: string;
-}
+
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -38,7 +31,7 @@ const iconLinks = [
   { src: cart, path: "/cart", alt: "cart", size: 21 },
 ];
 
-const NavBar = ({ session }: { session: SessionType }) => {
+const NavBar = ({ session }: { session: SessionType | null }) => {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -132,10 +125,18 @@ const NavBar = ({ session }: { session: SessionType }) => {
                 className="cursor-pointer rounded-full"
                 referrerPolicy="no-referrer"
               />
+              <span className="text-black text-sm ml-2">{session.user.name}</span>
             </Link>
           ) : (
             <Link href="/account" className="flex items-center">
-              <div className=""></div>
+              <Image
+                src={user}
+                alt="user profile"
+                width={20}
+                height={20}
+                className="cursor-pointer rounded-full"
+                referrerPolicy="no-referrer"
+              />
             </Link>
           )}
         </div>

@@ -141,3 +141,31 @@ export const getProductById = async function(id: number): Promise<Product | null
 
    return product;
 }
+
+export async function getUser(email:string){
+  
+const { data: user, error } = await supabase
+.from('users')
+.select('email')
+.eq('email', email)
+.single(); 
+
+return user;
+}
+
+
+export async function newUser(newUser: { email: string, first_name: string, last_name: string, phone_number: string ,profile_image_url:string}) {
+  const { data, error } = await supabase
+  .from('users')
+  .insert([
+    newUser
+  ])
+  .select()
+  .single(); 
+
+  if(error) {
+    throw new Error(`Could not create user: ${error.message}`);
+  }
+
+  return data;
+}
