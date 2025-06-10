@@ -18,7 +18,7 @@ type RawProductData = {
   sku: string | null;
 };
 
-// Helper to safely extract category name
+ // Helper to safely extract category name
 const getCategoryName = (
   categoriesData: RawProductData["categories"]
 ): Category | null => {
@@ -169,7 +169,7 @@ export const getProductById = async function (
 };
 
 export async function getUser(email: string) {
-  const { data: user, error } = await supabase
+  const { data: user } = await supabase
     .from("users")
     .select("email")
     .eq("email", email)
