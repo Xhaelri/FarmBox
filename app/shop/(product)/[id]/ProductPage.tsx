@@ -1,6 +1,6 @@
 // app/shop/[id]/ProductPage.tsx
 import ProductDetails from "../../../_components/ProductDetails/ProductDetails"; // Adjust import path
-import { getProductById } from "../../../_lib/data-service"; // Adjust import path
+import { getProductById } from "../../../lib/data-service"; // Adjust import path
 import { notFound } from "next/navigation";
 
 interface Props {
@@ -14,8 +14,8 @@ const ProductPage = async ({ params }: Props) => {
 
   // Validate parsed ID before fetching
   if (isNaN(productId) || productId <= 0) {
-     console.warn(`Invalid product ID requested: ${productIdString}`);
-     notFound(); // Show 404 for invalid numeric ID format
+    console.warn(`Invalid product ID requested: ${productIdString}`);
+    notFound(); // Show 404 for invalid numeric ID format
   }
 
   // Fetch initial data on the server
@@ -25,7 +25,7 @@ const ProductPage = async ({ params }: Props) => {
   // Although getProductById might call notFound(),
   // it's good practice to handle the null case explicitly if it could return null
   if (!product) {
-     notFound();
+    notFound();
   }
 
   // Pass the *number* ID and initial data to the client component

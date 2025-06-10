@@ -3,7 +3,7 @@ import { EyeIcon, EyeOffIcon } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import googleIcon from "../../../public/google.svg";
-import { signInAction } from "../../_lib/actions";
+import { signInAction } from "../../lib/actions";
 
 const LoginComponent = () => {
   const [showPassword, setShowPassword] = useState(false);

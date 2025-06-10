@@ -2,7 +2,7 @@
 import Link from "next/link";
 
 import { usePathname } from "next/navigation";
-import { signOutAction } from "../_lib/actions";
+import { signOutAction } from "../lib/actions";
 
 function NavigationSidebar({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();

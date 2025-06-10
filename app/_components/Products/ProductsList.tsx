@@ -1,6 +1,6 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { getProducts } from "../../_lib/data-service";
+import { getProducts } from "../../lib/data-service";
 import ProductCard from "./ProductCard";
 import Spinner from "../Spinner";
 import Product from "../../types/Product";

@@ -5,7 +5,7 @@ import TopBar from "./_components/TopBar";
 import NavBar from "./_components/NavBar";
 import { TanstackProvider } from "./_components/providers/tanstack-provider";
 import { CartProvider } from "./_components/CartContext/CartContext";
-import { auth } from "./_lib/auth";
+import { auth } from "./lib/auth";
 import SessionType from "./types/Session";
 
 export const metadata: Metadata = {
@@ -63,9 +63,7 @@ export default async function RootLayout({
               <TopBar />
               <NavBar session={session} />
             </header>
-            <main className="flex-grow">
-              {children}
-            </main>
+            <main className="flex-grow">{children}</main>
           </TanstackProvider>
         </CartProvider>
       </body>
